@@ -1,0 +1,81 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: var(--game-color-background);
+  color: var(--game-text-color);
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Header Section */
+
+header {
+  display: block;
+}
+
+.toolbar-header {
+  width: 100%;
+  height: var(--header-toolbar-height);
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-section {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--horizontal-spacing-2);
+  position: relative;
+}
+
+.back-button,
+.settings-menu {
+  position: relative;
+}
+
+.back-button,
+.settings-cog-button {
+  width: 35px;
+  height: 35px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--settings-cog-color);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.back-button {
+  text-decoration: none;
+}
+
+.back-button-icon {
+  width: 35px;
+  height: 35px;
+  display: block;
+  stroke: currentColor;
+}
+
+.settings-cog-icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+}

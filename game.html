@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Armadle-Game</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/game_styles.css">
+  <script src="scripts/game_logic.js" defer></script>
+  <script src="scripts/game_visuals.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="game-container">
+      <header class="toolbar-header">
+        <section class="toolbar-section">
+          <a class="back-button" href="index.html" aria-label="Back to home">
+            <svg class="back-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M14.5 6.5 9 12l5.5 5.5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
+            </svg>
+          </a>
+          <div class="settings-menu">
+            <button class="settings-cog-button" id="settings-cog-button" type="button" aria-label="Open settings menu"
+              aria-haspopup="dialog" aria-expanded="false" aria-controls="settings-dropdown">
+              <img class="settings-cog-icon" src="assets/settings-cog.svg" alt="" aria-hidden="true">
+            </button>
+          </div>
+        </section>
+      </header>
+    </div>
+  </div>
+</body>
+</html>

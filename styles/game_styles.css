@@ -117,7 +117,7 @@ header {
   grid-gap: 2px;
   padding: 2px;
   box-sizing: border-box;
-  min-width: min(280px, 100vw);
+  min-width: min(300px, 100vw);
 }
 
 .game-row {
@@ -144,4 +144,11 @@ header {
 
 .game-tile[data-state="empty"] {
   border: 2px solid var(--empty-tile-color);
+  background-color: var(--empty-tile-bg-color);
+}
+
+@media (min-width: 768px) {
+  .game-board {
+    min-width: 360px;
+  }
 }

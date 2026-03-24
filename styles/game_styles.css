@@ -150,6 +150,21 @@ header {
   background-color: var(--empty-tile-bg-color);
 }
 
+.game-tile[data-state="near"] {
+  border: 2px solid var(--near-tile-color);
+  background-color: var(--near-tile-bg-color);
+}
+
+.game-tile[data-state="miss"] {
+  border: 2px solid var(--miss-tile-color);
+  background-color: var(--miss-tile-bg-color);
+}
+
+.game-tile[data-state="hit"] {
+  border: 2px solid var(--hit-tile-color);
+  background-color: var(--hit-tile-bg-color);
+}
+
 .game-tile:active,
 .game-tile.is-selected {
   transform: scale(0.93);

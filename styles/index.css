@@ -23,13 +23,13 @@
   --text-btn-primary: #ffffff;
 
   /* Game tile styles */
-  --empty-tile-color: #89acd7;
-  --empty-tile-bg-color: #acc7e8;
-  --selected-tile-bg-color: #bed4ee;
-  --near-tile-color: #89cfd7;
-  --near-tile-bg-color: #ace1e7;
-  --miss-tile-color: #a5a5a5;
-  --miss-tile-bg-color: #e4e4e4;
-  --hit-tile-color: #be2a2a;
-  --hit-tile-bg-color: #c03939;
+  --empty-tile-color: #6f94c4;
+  --empty-tile-bg-color: #c3d7ef;
+  --selected-tile-bg-color: #d7e5f6;
+  --near-tile-color: #c7872f;
+  --near-tile-bg-color: #f2d39a;
+  --miss-tile-color: #aab7c8;
+  --miss-tile-bg-color: #edf2f7;
+  --hit-tile-color: #9f2232;
+  --hit-tile-bg-color: #ee6b78;
 }

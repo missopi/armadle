@@ -185,3 +185,25 @@ header {
     min-width: 360px;
   }
 }
+
+
+/* Action Button Styles */
+
+.game-action-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: var(--vertical-spacing-2);
+}
+
+.game-action-button {
+  background: transparent;
+  border: 2px solid var(--sm-btn-border-color);
+  color: var(--sm-btn-text-color);
+  padding: 12px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}

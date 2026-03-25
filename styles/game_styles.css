@@ -80,6 +80,117 @@ header {
   display: block;
 }
 
+/* Settings styles */
+
+:root[data-theme="dark"] .settings-cog-icon {
+  filter: brightness(0) invert(1);
+}
+
+.back-button:focus-visible,
+.settings-cog-button:focus-visible {
+  outline: 2px solid var(--settings-border-color);
+  outline-offset: 2px;
+}
+
+.settings-dropdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(500px, calc(100vw - 32px));
+  background-color: var(--settings-surface-color);
+  border: 1px solid var(--settings-border-color);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  color: var(--settings-text-color);
+  z-index: 200;
+  padding: 6px 5px 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.settings-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.settings-close-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+:root[data-theme="dark"] .settings-close-icon {
+  filter: brightness(0) invert(1);
+}
+
+.settings-close-button:focus-visible {
+  outline: 2px solid var(--settings-border-color);
+  outline-offset: 2px;
+}
+
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.settings-option:hover {
+  background: var(--settings-hover-color);
+}
+
+.settings-option-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.settings-option-title {
+  line-height: 1.2;
+}
+
+.settings-option-subtitle {
+  font-size: 0.8rem;
+  line-height: 1.2;
+  opacity: 0.8;
+}
+
+.settings-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.settings-link-button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.settings-dropdown h2 {
+  text-align: center;
+  margin: 10px 12px 8px;
+}
+
 /* Game Board Styles */
 
 .container {

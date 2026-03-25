@@ -1,3 +1,5 @@
+const THEME_STORAGE_KEY = "armadle-game-theme";
+
 const tiles = Array.from(document.querySelectorAll(".game-tile"));
 const gameBoard = document.querySelector(".game-board");
 
@@ -127,4 +129,85 @@ document.addEventListener("click", (event) => {
   }
 
   clearSelectedTile();
+});
+
+// Set up dark mode theme
+function getPreferredTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  if (savedTheme === "dark" || savedTheme === "light") {
+    return savedTheme;
+  }
+}
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem(THEME_STORAGE_KEY, theme);
+}
+
+// Setup for the settings menu modal
+function setupSettingsMenu() {
+  const settingsMenu = document.querySelector(".settings-menu");
+  const settingsButton = document.getElementById("settings-cog-button");
+  const settingsCloseButton = document.getElementById("settings-close-button");
+  const settingsDropdown = document.getElementById("settings-dropdown");
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  let lastTrigger = null;
+
+  if (
+    !settingsMenu ||
+    !settingsButton ||
+    !settingsCloseButton ||
+    !settingsDropdown ||
+    !darkModeToggle
+  ) {
+    return;
+  }
+
+  const startingTheme = getPreferredTheme();
+  applyTheme(startingTheme);
+  darkModeToggle.checked = startingTheme === "dark";
+
+  const setMenuState = (isOpen) => {
+    settingsDropdown.classList.toggle("hidden", !isOpen);
+    settingsButton.setAttribute("aria-expanded", String(isOpen));
+    settingsDropdown.setAttribute("aria-hidden", String(!isOpen));
+
+    if (isOpen) {
+      lastTrigger = settingsButton;
+      settingsCloseButton.focus();
+    } else if (lastTrigger === settingsButton) {
+      settingsButton.focus();
+    }
+  };
+
+  settingsButton.addEventListener("click", () => {
+    const isCurrentlyOpen = !settingsDropdown.classList.contains("hidden");
+    setMenuState(!isCurrentlyOpen);
+  });
+
+  settingsCloseButton.addEventListener("click", () => {
+    setMenuState(false);
+  });
+
+  darkModeToggle.addEventListener("change", () => {
+    applyTheme(darkModeToggle.checked ? "dark" : "light");
+  });
+
+  document.addEventListener("click", (event) => {
+    const clickedInsideMenu = settingsMenu.contains(event.target);
+    if (!clickedInsideMenu) {
+      setMenuState(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setMenuState(false);
+      settingsButton.focus();
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupSettingsMenu();
 });

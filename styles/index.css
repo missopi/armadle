@@ -21,8 +21,9 @@
   /* Button styles */
   --bg-btn-primary: #000000;
   --text-btn-primary: #ffffff;
-  --sm-btn-border-color: #828181;
-  --sm-btn-text-color: #787878;
+  --sm-btn-bg-color: #e45c5c;
+  --sm-btn-border-color: #aa3636;
+  --sm-btn-text-color: #f8f7f7;
 
   /* Game tile styles */
   --empty-tile-color: #6f94c4;
@@ -34,4 +35,11 @@
   --miss-tile-bg-color: #edf2f7;
   --hit-tile-color: #9f2232;
   --hit-tile-bg-color: #ee6b78;
+
+  /* Ship styles */
+  --ship-nf-color: #8b939e;
+  --ship-nf-bg-color: #d0d3d7;
+  --ship-f-color: #9f2232;
+  --ship-f-bg-color: #ee6b78;;
+  --ship-container-border: #8b939e;
 }

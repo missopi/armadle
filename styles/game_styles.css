@@ -189,6 +189,15 @@ header {
 
 /* Action Button Styles */
 
+.game-actions-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
 .game-action-row {
   display: flex;
   justify-content: center;
@@ -198,12 +207,72 @@ header {
 }
 
 .game-action-button {
-  background: transparent;
   border: 2px solid var(--sm-btn-border-color);
+  background-color: var(--sm-btn-bg-color);
   color: var(--sm-btn-text-color);
   padding: 12px 20px;
   border-radius: 16px;
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
+  box-shadow:inset 2px 2px 2px 2px rgb(249, 249, 249, 0.25); 
 }
+
+/* ships to find styles */
+
+.ships-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 12px;
+  border: 2px solid var(--ship-container-border);
+  border-radius: 15%;
+  margin: 15px;
+}
+
+.ships {
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  grid-gap: 8px;
+  padding: 2px;
+  box-sizing: border-box;
+  width: min(100px, 100vw);
+  justify-items: start;
+}
+
+.ship {
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+}
+
+.ship-tile-container {
+  display: block;
+}
+
+.ship-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  user-select: none;
+  border-radius: 15%;
+}
+
+.ship-tile[data-state="not-found"] {
+  border: 2px solid var(--ship-nf-color);
+  background-color: var(--ship-nf-bg-color);
+}
+
+.ship-tile[data-state="found"] {
+  border: 2px solid var(--ship-f-color);
+  background-color: var(--ship-f-bg-color);
+}
+

@@ -50,6 +50,8 @@
   /* Life styles */
   --alive-color:#6ba987;
   --alive-bg-color:#86c69c;
+  --life-lost-color: #8b939e;
+  --life-lost-bg-color: #d0d3d7;
 }
 
 @media (min-width: 768px) {
@@ -89,5 +91,7 @@
   /* Life styles */
   --alive-color: #63a88b;
   --alive-bg-color: #006243;
+  --life-lost-color: #5c6d83;
+  --life-lost-bg-color: #2a3442;
 }
 

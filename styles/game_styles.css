@@ -217,6 +217,14 @@ header {
   transform: scale(0.90);
 }
 
+.game-action-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+  box-shadow: none;
+  border: 2px solid var(--ship-nf-color);
+  background-color: var(--ship-nf-bg-color);
+}
+
 /* ships to find styles */
 
 .ships-container {
@@ -274,4 +282,3 @@ header {
   border: 2px solid var(--ship-f-color);
   background-color: var(--ship-f-bg-color);
 }
-

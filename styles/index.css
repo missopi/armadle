@@ -66,6 +66,28 @@
   --settings-text-color: #f0f3f8;
   --settings-hover-color: #253242;
   --settings-cog-color: #f0f3f8;
-}
+  --sm-btn-bg-color: #c65d6a;
+  --sm-btn-border-color: #8e3f4b;
+  --sm-btn-text-color: #f7f3f4;
 
+  /* Game tile styles */
+  --empty-tile-color: #4a6688;
+  --empty-tile-bg-color: #233246;
+  --selected-tile-bg-color: #314862;
+  --miss-tile-color: #bbc2ca;
+  --miss-tile-bg-color: #77879c;
+  --hit-tile-color: #cc6873;
+  --hit-tile-bg-color: #960617;
+
+  /* Ship styles */
+  --ship-nf-color: #5c6d83;
+  --ship-nf-bg-color: #2a3442;
+  --ship-f-color: #d46b78;
+  --ship-f-bg-color: #6e3140;
+  --ship-container-border: #5c6d83;
+
+  /* Life styles */
+  --alive-color: #63a88b;
+  --alive-bg-color: #006243;
+}
 

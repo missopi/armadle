@@ -8,6 +8,8 @@ const shipTileIndexes = new Set(
   dailyLocations.flatMap((ship) => ship.tiles.map((tile) => tile.index)),
 );
 const firedTileIndexes = new Set(); // Array to store shots fired tile indexes.
+const TILE_FLIP_DURATION_MS = 200;
+const TILE_FLIP_STATE_SWAP_MS = TILE_FLIP_DURATION_MS / 2;
 
 let selectedTile = null;
 
@@ -46,7 +48,8 @@ function fireAtSelectedTile() {
     return;
   }
 
-  const tileIndex = Number(selectedTile.dataset.index);
+  const tile = selectedTile;
+  const tileIndex = Number(tile.dataset.index);
 
   if (firedTileIndexes.has(tileIndex)) {
     return;
@@ -54,10 +57,18 @@ function fireAtSelectedTile() {
 
   const shotResult = shipTileIndexes.has(tileIndex) ? "hit" : "miss";
   firedTileIndexes.add(tileIndex);
-  selectedTile.dataset.state = shotResult;
-  selectedTile.setAttribute("aria-label", `Tile ${tileIndex + 1}, ${shotResult}`);
-  selectedTile.setAttribute("aria-disabled", "true");
-  selectedTile.setAttribute("tabindex", "-1");
+  tile.classList.add("is-firing");
+  tile.setAttribute("aria-disabled", "true");
+  tile.setAttribute("tabindex", "-1");
+
+  window.setTimeout(() => {
+    tile.dataset.state = shotResult;
+    tile.setAttribute("aria-label", `Tile ${tileIndex + 1}, ${shotResult}`);
+  }, TILE_FLIP_STATE_SWAP_MS);
+
+  window.setTimeout(() => {
+    tile.classList.remove("is-firing");
+  }, TILE_FLIP_DURATION_MS);
 
   clearSelectedTile();
 }

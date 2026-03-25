@@ -40,4 +40,10 @@
   --ship-f-color: #9f2232;
   --ship-f-bg-color: #ee6b78;;
   --ship-container-border: #8b939e;
+
+  /* Life styles */
+  --alive-color:#4F8F6B;
+  --alive-bg-color:#8FC9A3;
 }
+
+

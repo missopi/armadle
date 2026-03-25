@@ -3,6 +3,11 @@ const THEME_STORAGE_KEY = "armadle-game-theme";
 const tiles = Array.from(document.querySelectorAll(".game-tile"));
 const gameBoard = document.querySelector(".game-board");
 
+// Create array of fleet-mine ship tiles
+const mineFleetShips = Array.from(document.querySelectorAll(".fleet-mine .ship")).map(
+  (ship) => Array.from(ship.querySelectorAll(".ship-tile")),
+);
+
 const dailyLocations = window.ArmadleGameLogic.getDailyTargetLocations(); // Ship locations for that day.
 
 // Flatten ship arrays into single array.
@@ -14,6 +19,51 @@ const TILE_FLIP_DURATION_MS = 200;
 const TILE_FLIP_STATE_SWAP_MS = TILE_FLIP_DURATION_MS / 2;
 
 let selectedTile = null;
+let activeMissShipIndex = null;
+
+function getAliveMineTiles(shipTiles) {
+  return shipTiles.filter((tile) => tile.dataset.state === "alive");
+}
+
+// Choose random ship tile (for simulating lost life).
+function getRandomAliveMineShipIndex() {
+  const aliveShipIndexes = mineFleetShips
+    .map((shipTiles, index) => (getAliveMineTiles(shipTiles).length > 0 ? index : null))
+    .filter((index) => index !== null);
+
+  if (aliveShipIndexes.length === 0) {
+    return null;
+  }
+
+  const randomShipOffset = Math.floor(Math.random() * aliveShipIndexes.length);
+  return aliveShipIndexes[randomShipOffset];
+}
+
+// Set ship tile to lif-lost so visually is greyed out.
+function removeMineShipLife() {
+  if (activeMissShipIndex === null || getAliveMineTiles(mineFleetShips[activeMissShipIndex]).length === 0) {
+    activeMissShipIndex = getRandomAliveMineShipIndex();
+  }
+
+  if (activeMissShipIndex === null) {
+    return;
+  }
+
+  const activeShipTiles = mineFleetShips[activeMissShipIndex];
+  const aliveTiles = getAliveMineTiles(activeShipTiles);
+
+  if (aliveTiles.length === 0) {
+    activeMissShipIndex = null;
+    return;
+  }
+
+  const tileToLose = aliveTiles[aliveTiles.length - 1];
+  tileToLose.dataset.state = "life-lost";
+
+  if (getAliveMineTiles(activeShipTiles).length === 0) {
+    activeMissShipIndex = null;
+  }
+}
 
 // Reset current tile selection so it unhighlights.
 function clearSelectedTile() {
@@ -66,6 +116,10 @@ function fireAtSelectedTile() {
   window.setTimeout(() => {
     tile.dataset.state = shotResult;
     tile.setAttribute("aria-label", `Tile ${tileIndex + 1}, ${shotResult}`);
+
+    if (shotResult === "miss") {
+      removeMineShipLife();
+    }
   }, TILE_FLIP_STATE_SWAP_MS);
 
   window.setTimeout(() => {

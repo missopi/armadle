@@ -150,11 +150,6 @@ header {
   background-color: var(--empty-tile-bg-color);
 }
 
-.game-tile[data-state="near"] {
-  border: 2px solid var(--near-tile-color);
-  background-color: var(--near-tile-bg-color);
-}
-
 .game-tile[data-state="miss"] {
   border: 2px solid var(--miss-tile-color);
   background-color: var(--miss-tile-bg-color);

@@ -413,7 +413,7 @@ header {
 }
 
 .fleet-target .ship-tile[data-state="not-found"],
-.fleet-mine .ship-tile[data-state="lose-life"] {
+.fleet-mine .ship-tile[data-state="life-lost"] {
   border: 2px solid var(--ship-nf-color);
   background-color: var(--ship-nf-bg-color);
   opacity: 0.45;

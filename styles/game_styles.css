@@ -219,7 +219,7 @@ header {
 
 .game-actions-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-grow: 1;
@@ -258,28 +258,35 @@ header {
   background-color: var(--ship-nf-bg-color);
 }
 
-/* ships to find styles */
+/* ship panel styles */
 
-.ships-container {
+.ships-panel {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
   overflow: hidden;
-  padding: 12px;
-  border: 2px solid var(--ship-container-border);
-  border-radius: 15%;
   margin: 10px;
 }
 
-.ships {
+.ships-panel-target {
+  justify-content: flex-start;
+}
+
+.ships-panel-mine {
+  justify-content: flex-end;
+}
+
+.fleet {
   display: grid;
   grid-template-rows: repeat(4, auto);
-  grid-gap: 8px;
+  grid-gap: 2px;
   padding: 2px;
   box-sizing: border-box;
-  width: min(100px, 100vw);
+  width: min(120px, 100vw);
+}
+
+.fleet-target {
   justify-items: start;
 }
 
@@ -306,63 +313,27 @@ header {
   border-radius: 15%;
 }
 
-.ship-tile[data-state="not-found"] {
+.fleet-target .ship-tile[data-state="not-found"],
+.fleet-mine .ship-tile[data-state="lose-life"] {
   border: 2px solid var(--ship-nf-color);
   background-color: var(--ship-nf-bg-color);
 }
 
-.ship-tile[data-state="found"] {
+.fleet-target .ship-tile[data-state="found"] {
   border: 2px solid var(--ship-f-color);
   background-color: var(--ship-f-bg-color);
 }
 
-/* Lives styles */
-
-.lives-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  flex-grow: 1;
-  overflow: hidden;
-  margin: 10px;
-  gap: 10px;
-}
-
-.lives {
-  display: grid;
-  grid-template-rows: repeat(1, auto);
-  grid-gap: 8px;
-  padding: 2px;
-  box-sizing: border-box;
-  width: min(250px, 100vw);
-  justify-items: start;
-}
-
-.life {
-  display: grid;
-  grid-gap: 2px;
-  grid-template-columns: repeat(10, 1fr);
-  width: 100%;
-}
-
-.life-tile-container {
-  display: block;
-}
-
-.life-tile {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
-  box-sizing: border-box;
-  user-select: none;
-  border-radius: 15%;
-}
-
-.life-tile[data-state="alive"] {
+.fleet-mine .ship-tile[data-state="alive"] {
   border: 2px solid var(--alive-color);
   background-color: var(--alive-bg-color);
+  opacity: 0.45;
+}
+
+.fleet-mine .ship > :first-child:nth-last-child(3) {
+  grid-column: 2;
+}
+
+.fleet-mine .ship > :first-child:nth-last-child(2) {
+  grid-column: 3;
 }

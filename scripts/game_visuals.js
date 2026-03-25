@@ -1,29 +1,103 @@
-const tiles = document.querySelectorAll(".game-tile");
+const tiles = Array.from(document.querySelectorAll(".game-tile"));
 const gameBoard = document.querySelector(".game-board");
+const fireButton = document.querySelector("#fire-button");
+
+const dailyLocations = window.ArmadleGameLogic.getDailyTargetLocations(); // Ship locations for that day.
+
+// Flatten ship arrays into single array.
+const shipTileIndexes = new Set(
+  dailyLocations.flatMap((ship) => ship.tiles.map((tile) => tile.index)),
+);
+const firedTileIndexes = new Set(); // Array to store shots fired tile indexes.
 
 let selectedTile = null;
 
-// Select each individual tile on the gameboard when clicked
+// Reset current tile selection so it unhighlights.
+function clearSelectedTile() {
+  if (!selectedTile) {
+    return;
+  }
+
+  selectedTile.classList.remove("is-selected");
+  selectedTile.setAttribute("aria-pressed", "false");
+  selectedTile = null;
+}
+
+// Check if tile has already been fired on.
+function isTileLocked(tile) {
+  return firedTileIndexes.has(Number(tile.dataset.index));
+}
+
+// Fire button enabled/disabled.
+function updateFireButtonState() {
+  if (!fireButton) {
+    return;
+  }
+
+  const hasSelectedTile = Boolean(selectedTile);
+  const selectedTileIndex = hasSelectedTile ? Number(selectedTile.dataset.index) : null;
+  const hasAlreadyFiredAtTile =
+    selectedTileIndex !== null && firedTileIndexes.has(selectedTileIndex);
+
+  fireButton.disabled = !hasSelectedTile || hasAlreadyFiredAtTile;
+}
+
+// Select or deselect a clicked tile.
+function selectTile(tile) {
+  if (isTileLocked(tile)) {
+    clearSelectedTile();
+    updateFireButtonState();
+    return;
+  }
+
+  if (selectedTile === tile) {
+    clearSelectedTile();
+    updateFireButtonState();
+    return;
+  }
+
+  clearSelectedTile();
+  tile.classList.add("is-selected");
+  tile.setAttribute("aria-pressed", "true");
+  selectedTile = tile;
+  updateFireButtonState();
+}
+
+// Fire at selected tile and record if its a hit or miss.
+function fireAtSelectedTile() {
+  if (!selectedTile) {
+    return;
+  }
+
+  const tileIndex = Number(selectedTile.dataset.index);
+
+  if (firedTileIndexes.has(tileIndex)) {
+    updateFireButtonState();
+    return;
+  }
+
+  const shotResult = shipTileIndexes.has(tileIndex) ? "hit" : "miss";
+  firedTileIndexes.add(tileIndex);
+  selectedTile.dataset.state = shotResult;
+  selectedTile.setAttribute("aria-label", `Tile ${tileIndex + 1}, ${shotResult}`);
+  selectedTile.setAttribute("aria-disabled", "true");
+  selectedTile.setAttribute("tabindex", "-1");
+
+  clearSelectedTile();
+  updateFireButtonState();
+}
+
+// Give each tile an ID and make accessible by mouse/keyboard.
 tiles.forEach((tile, index) => {
+  tile.dataset.index = String(index);
   tile.setAttribute("role", "button");
   tile.setAttribute("tabindex", "0");
   tile.setAttribute("aria-pressed", "false");
+  tile.setAttribute("aria-disabled", "false");
   tile.setAttribute("aria-label", `Tile ${index + 1}`);
 
   tile.addEventListener("click", () => {
-    if (selectedTile) {
-      selectedTile.classList.remove("is-selected");
-      selectedTile.setAttribute("aria-pressed", "false");
-    }
-
-    if (selectedTile === tile) {
-      selectedTile = null;
-      return;
-    }
-
-    tile.classList.add("is-selected");
-    tile.setAttribute("aria-pressed", "true");
-    selectedTile = tile;
+    selectTile(tile);
   });
 
   tile.addEventListener("keydown", (event) => {
@@ -32,17 +106,44 @@ tiles.forEach((tile, index) => {
     }
 
     event.preventDefault();
-    tile.click();
+    selectTile(tile);
   });
 });
 
-// Deselect game tile
-document.addEventListener("click", (event) => {
-  if (!selectedTile || gameBoard?.contains(event.target)) {
+// Fire button logic
+fireButton?.addEventListener("click", fireAtSelectedTile);
+
+// Allow user to press enter key to fire
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" || !selectedTile) {
     return;
   }
 
-  selectedTile.classList.remove("is-selected");
-  selectedTile.setAttribute("aria-pressed", "false");
-  selectedTile = null;
+  if (document.activeElement === fireButton) {
+    return;
+  }
+
+  event.preventDefault();
+  fireAtSelectedTile();
 });
+
+// Clicking away deselects tile
+document.addEventListener("click", (event) => {
+  if (!selectedTile) {
+    return;
+  }
+
+  const clickedEnabledTile =
+    event.target instanceof Element
+      ? event.target.closest('.game-tile[aria-disabled="false"]')
+      : null;
+
+  if (clickedEnabledTile) {
+    return;
+  }
+
+  clearSelectedTile();
+  updateFireButtonState();
+});
+
+updateFireButtonState();

@@ -8,7 +8,7 @@ const getFleetShips = (selector) =>
   Array.from(document.querySelectorAll(`${selector} .ship`)).map((ship) =>
     Array.from(ship.querySelectorAll(".ship-tile")),
   );
-  
+
 const mineFleetShips = getFleetShips(".fleet-mine");
 const targetFleetShips = getFleetShips(".fleet-target");
 
@@ -92,6 +92,7 @@ function removeMineShipLife() {
   }
 }
 
+// Change ship tiles from not-found to found when hit is fired
 function markFoundTargetTile(tileIndex) {
   const hitShipIndex = dailyLocations.findIndex((ship) =>
     ship.tiles.some((tile) => tile.index === tileIndex),

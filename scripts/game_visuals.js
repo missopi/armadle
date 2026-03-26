@@ -1,4 +1,5 @@
 const THEME_STORAGE_KEY = "armadle-game-theme";
+const SINGLE_SHOT_FIRE_STORAGE_KEY = "armadle-single-shot-fire";
 
 const tiles = Array.from(document.querySelectorAll(".game-tile"));
 const gameBoard = document.querySelector(".game-board");
@@ -27,6 +28,7 @@ const gameStatusMessage = document.getElementById("game-status-message");
 let selectedTile = null;
 let activeMissShipIndex = null;
 let hasHandledGameOver = false;
+let isSingleShotFireEnabled = false;
 
 // Filter for my ships that are alive
 function getAliveMineTiles(shipTiles) {
@@ -287,6 +289,15 @@ function fireAtSelectedTile() {
   clearSelectedTile();
 }
 
+function fireAtTile(tile) {
+  if (!tile) {
+    return;
+  }
+
+  selectTile(tile);
+  fireAtSelectedTile();
+}
+
 setupTargetFleetShipMappings();
 
 // Fire at selected tile if tile is already selected
@@ -298,6 +309,11 @@ function activateTile(tile) {
 
   if (isTileLocked(tile)) {
     clearSelectedTile();
+    return;
+  }
+
+  if (isSingleShotFireEnabled) {
+    fireAtTile(tile);
     return;
   }
 
@@ -360,11 +376,26 @@ function getPreferredTheme() {
   if (savedTheme === "dark" || savedTheme === "light") {
     return savedTheme;
   }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem(THEME_STORAGE_KEY, theme);
+}
+
+function getSingleShotFirePreference() {
+  return localStorage.getItem(SINGLE_SHOT_FIRE_STORAGE_KEY) === "true";
+}
+
+function applySingleShotFirePreference(isEnabled) {
+  isSingleShotFireEnabled = isEnabled;
+  localStorage.setItem(SINGLE_SHOT_FIRE_STORAGE_KEY, String(isEnabled));
+
+  if (isEnabled) {
+    clearSelectedTile();
+  }
 }
 
 // Setup for the settings menu modal
@@ -374,6 +405,7 @@ function setupSettingsMenu() {
   const settingsCloseButton = document.getElementById("settings-close-button");
   const settingsDropdown = document.getElementById("settings-dropdown");
   const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const singleShotToggle = document.getElementById("single-shot-toggle");
   let lastTrigger = null;
 
   if (
@@ -381,7 +413,8 @@ function setupSettingsMenu() {
     !settingsButton ||
     !settingsCloseButton ||
     !settingsDropdown ||
-    !darkModeToggle
+    !darkModeToggle ||
+    !singleShotToggle
   ) {
     return;
   }
@@ -389,6 +422,9 @@ function setupSettingsMenu() {
   const startingTheme = getPreferredTheme();
   applyTheme(startingTheme);
   darkModeToggle.checked = startingTheme === "dark";
+  const startingSingleShotFirePreference = getSingleShotFirePreference();
+  applySingleShotFirePreference(startingSingleShotFirePreference);
+  singleShotToggle.checked = startingSingleShotFirePreference;
 
   const setMenuState = (isOpen) => {
     settingsDropdown.classList.toggle("hidden", !isOpen);
@@ -414,6 +450,10 @@ function setupSettingsMenu() {
 
   darkModeToggle.addEventListener("change", () => {
     applyTheme(darkModeToggle.checked ? "dark" : "light");
+  });
+
+  singleShotToggle.addEventListener("change", () => {
+    applySingleShotFirePreference(singleShotToggle.checked);
   });
 
   document.addEventListener("click", (event) => {

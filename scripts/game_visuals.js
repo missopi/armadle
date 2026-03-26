@@ -415,24 +415,76 @@ function applySingleShotFirePreference(isEnabled) {
   }
 }
 
-// Setup for the settings menu modal
-function setupSettingsMenu() {
-  const settingsMenu = document.querySelector(".settings-menu");
-  const settingsButton = document.getElementById("settings-cog-button");
-  const settingsCloseButton = document.getElementById("settings-close-button");
-  const settingsDropdown = document.getElementById("settings-dropdown");
-  const darkModeToggle = document.getElementById("dark-mode-toggle");
-  const singleShotToggle = document.getElementById("single-shot-toggle");
+function setupToolbarDialog({
+  containerSelector,
+  buttonId,
+  closeButtonId,
+  dialogId,
+  onOpen,
+  onClose,
+}) {
+  const container = document.querySelector(containerSelector);
+  const button = document.getElementById(buttonId);
+  const closeButton = document.getElementById(closeButtonId);
+  const dialog = document.getElementById(dialogId);
   let lastTrigger = null;
 
-  if (
-    !settingsMenu ||
-    !settingsButton ||
-    !settingsCloseButton ||
-    !settingsDropdown ||
-    !darkModeToggle ||
-    !singleShotToggle
-  ) {
+  if (!container || !button || !closeButton || !dialog) {
+    return null;
+  }
+
+  const setDialogState = (isOpen) => {
+    dialog.classList.toggle("hidden", !isOpen);
+    button.setAttribute("aria-expanded", String(isOpen));
+    dialog.setAttribute("aria-hidden", String(!isOpen));
+
+    if (isOpen) {
+      lastTrigger = button;
+      closeButton.focus();
+      onOpen?.();
+    } else {
+      onClose?.();
+
+      if (lastTrigger === button) {
+        button.focus();
+      }
+    }
+  };
+
+  button.addEventListener("click", () => {
+    const isCurrentlyOpen = !dialog.classList.contains("hidden");
+    setDialogState(!isCurrentlyOpen);
+  });
+
+  closeButton.addEventListener("click", () => {
+    setDialogState(false);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!container.contains(event.target)) {
+      setDialogState(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setDialogState(false);
+    }
+  });
+
+  return {
+    close() {
+      setDialogState(false);
+    },
+  };
+}
+
+// Setup for the settings menu modal
+function setupSettingsMenu(onOpen) {
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const singleShotToggle = document.getElementById("single-shot-toggle");
+
+  if (!darkModeToggle || !singleShotToggle) {
     return;
   }
 
@@ -443,28 +495,6 @@ function setupSettingsMenu() {
   applySingleShotFirePreference(startingSingleShotFirePreference);
   singleShotToggle.checked = startingSingleShotFirePreference;
 
-  const setMenuState = (isOpen) => {
-    settingsDropdown.classList.toggle("hidden", !isOpen);
-    settingsButton.setAttribute("aria-expanded", String(isOpen));
-    settingsDropdown.setAttribute("aria-hidden", String(!isOpen));
-
-    if (isOpen) {
-      lastTrigger = settingsButton;
-      settingsCloseButton.focus();
-    } else if (lastTrigger === settingsButton) {
-      settingsButton.focus();
-    }
-  };
-
-  settingsButton.addEventListener("click", () => {
-    const isCurrentlyOpen = !settingsDropdown.classList.contains("hidden");
-    setMenuState(!isCurrentlyOpen);
-  });
-
-  settingsCloseButton.addEventListener("click", () => {
-    setMenuState(false);
-  });
-
   darkModeToggle.addEventListener("change", () => {
     applyTheme(darkModeToggle.checked ? "dark" : "light");
   });
@@ -473,21 +503,34 @@ function setupSettingsMenu() {
     applySingleShotFirePreference(singleShotToggle.checked);
   });
 
-  document.addEventListener("click", (event) => {
-    const clickedInsideMenu = settingsMenu.contains(event.target);
-    if (!clickedInsideMenu) {
-      setMenuState(false);
-    }
+  return setupToolbarDialog({
+    containerSelector: ".settings-menu",
+    buttonId: "settings-cog-button",
+    closeButtonId: "settings-close-button",
+    dialogId: "settings-dropdown",
+    onOpen,
   });
+}
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setMenuState(false);
-      settingsButton.focus();
-    }
+function setupHowToModal(onOpen) {
+  return setupToolbarDialog({
+    containerSelector: ".how-to-modal",
+    buttonId: "how-to-question-mark-button",
+    closeButtonId: "how-to-close-button",
+    dialogId: "how-to-dropdown",
+    onOpen,
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupSettingsMenu();
+  let settingsControls = null;
+  let howToControls = null;
+
+  settingsControls = setupSettingsMenu(() => {
+    howToControls?.close();
+  });
+
+  howToControls = setupHowToModal(() => {
+    settingsControls?.close();
+  });
 });

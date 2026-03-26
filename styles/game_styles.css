@@ -117,6 +117,8 @@ header {
   color: var(--settings-text-color);
   z-index: 200;
   padding: 6px 5px 20px;
+  max-height: min(80dvh, 720px);
+  overflow-y: auto;
 }
 
 .hidden {
@@ -213,6 +215,50 @@ header {
 
 .modal-copy p {
   margin: 0;
+}
+
+.instruction-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px 12px;
+  margin-top: 4px;
+}
+
+.instruction-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.instruction-tile,
+.instruction-ship-tile {
+  width: 22px;
+  aspect-ratio: 1 / 1;
+  display: inline-flex;
+  box-sizing: border-box;
+  border-radius: 15%;
+  flex: 0 0 auto;
+}
+
+.instruction-tile[data-state="miss"] {
+  border: 2px solid var(--miss-tile-color);
+  background-color: var(--miss-tile-bg-color);
+}
+
+.instruction-tile[data-state="hit"] {
+  border: 2px solid var(--hit-tile-color);
+  background-color: var(--hit-tile-bg-color);
+}
+
+.instruction-ship-tile[data-state="not-found"] {
+  border: 2px solid var(--ship-nf-color);
+  background-color: var(--ship-nf-bg-color);
+}
+
+.instruction-ship-tile[data-state="alive"] {
+  border: 2px solid var(--alive-color);
+  background-color: var(--alive-bg-color);
 }
 
 /* Game Board Styles */
@@ -328,8 +374,8 @@ header {
 }
 
 .game-tile[data-state="revealed"] {
-  border: 2px solid var(--revealed-tile-color);
-  background-color: var(--revealed-tile-bg-color);
+  border: 2px solid var(--ship-nf-color);
+  background-color: var(--ship-nf-bg-color);
 }
 
 .game-tile:not([aria-disabled="true"]):active,
@@ -474,10 +520,14 @@ header {
   border-radius: 15%;
 }
 
-.fleet-target .ship-tile[data-state="not-found"],
-.fleet-mine .ship-tile[data-state="life-lost"] {
+.fleet-target .ship-tile[data-state="not-found"] {
   border: 2px solid var(--ship-nf-color);
   background-color: var(--ship-nf-bg-color);
+}
+
+.fleet-mine .ship-tile[data-state="life-lost"] {
+  border: 2px solid var(--life-lost-color);
+  background-color: var(--life-lost-bg-color);
   opacity: 0.45;
 }
 

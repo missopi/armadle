@@ -112,11 +112,8 @@ function updateGameOverMessage(outcome) {
   }
 
   gameStatusMessage.replaceChildren(
-    createStatusMessageLine("Game over. Your fleet is gone.", "game-status-message-secondary"),
-    createStatusMessageLine(
-      "The remaining targets are highlighted. Try again tomorrow.",
-      "game-status-message-secondary",
-    ),
+    createStatusMessageLine("Your fleet is gone.", "game-status-message-secondary"),
+    createStatusMessageLine("Try again tomorrow.", "game-status-message-secondary"),
   );
 }
 

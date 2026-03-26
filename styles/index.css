@@ -31,19 +31,17 @@
   --sm-btn-text-color: #f8f7f7;
 
   /* Game tile styles */
-  --empty-tile-color: #6f94c4;
-  --empty-tile-bg-color: #c3d7ef;
+  --empty-tile-color: #6790c5;
+  --empty-tile-bg-color: #b9d3f2;
   --selected-tile-bg-color: #d7e5f6;
-  --miss-tile-color: #aab7c8;
-  --miss-tile-bg-color: #f7f5f5;
+  --miss-tile-color: #c8d7ea;
+  --miss-tile-bg-color: #f7fafe;
   --hit-tile-color: #9f2232;
   --hit-tile-bg-color: #ee6b78;
-  --revealed-tile-color: #7a828d;
-  --revealed-tile-bg-color: #bbc0c5;
 
   /* Ship styles */
-  --ship-nf-color: #8b939e;
-  --ship-nf-bg-color: #d0d3d7;
+  --ship-nf-color: #7a828d;
+  --ship-nf-bg-color: #bbc0c5;
   --ship-f-color: #9f2232;
   --ship-f-bg-color: #ee6b78;;
   --ship-container-border: #8b939e;
@@ -51,8 +49,8 @@
   /* Life styles */
   --alive-color:#6ba987;
   --alive-bg-color:#86c69c;
-  --life-lost-color: #8b939e;
-  --life-lost-bg-color: #d0d3d7;
+  --life-lost-color: #bcc3cb;
+  --life-lost-bg-color: #e6e9ec;
 }
 
 @media (min-width: 768px) {
@@ -81,12 +79,10 @@
   --miss-tile-bg-color: #142338;
   --hit-tile-color: #cc6873;
   --hit-tile-bg-color: #9e3945;
-  --revealed-tile-color: #bbc2ca;
-  --revealed-tile-bg-color: #77879c;
 
   /* Ship styles */
-  --ship-nf-color: #505d6f;
-  --ship-nf-bg-color: #252c36;
+  --ship-nf-color: #bbc2ca;
+  --ship-nf-bg-color: #77879c;
   --ship-f-color: #cc6873;
   --ship-f-bg-color: #9e3945;
   --ship-container-border: #5c6d83;

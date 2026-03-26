@@ -19,6 +19,7 @@ const dailyLocations = window.ArmadleGameLogic.getDailyTargetLocations(); // Shi
 const shipTileIndexes = new Set(
   dailyLocations.flatMap((ship) => ship.tiles.map((tile) => tile.index)),
 );
+const targetFleetShipsByDailyShip = [];
 const firedTileIndexes = new Set(); // Array to store shots fired tile indexes.
 const TILE_FLIP_DURATION_MS = 200;
 const TILE_FLIP_STATE_SWAP_MS = TILE_FLIP_DURATION_MS / 2;
@@ -34,6 +35,22 @@ function getAliveMineTiles(shipTiles) {
 // filter for target ships that are not found
 function getNotFoundTargetTiles(shipTiles) {
   return shipTiles.filter((tile) => tile.dataset.state === "not-found");
+}
+
+function setupTargetFleetShipMappings() {
+  const targetShipsBySize = new Map();
+
+  targetFleetShips.forEach((shipTiles) => {
+    const size = shipTiles.length;
+    const ships = targetShipsBySize.get(size) ?? [];
+    ships.push(shipTiles);
+    targetShipsBySize.set(size, ships);
+  });
+
+  dailyLocations.forEach((ship) => {
+    const matchingShips = targetShipsBySize.get(ship.size);
+    targetFleetShipsByDailyShip.push(matchingShips?.shift() ?? null);
+  });
 }
 
 // Choose random ship tile (for simulating lost life).
@@ -74,6 +91,30 @@ function removeMineShipLife() {
   if (getAliveMineTiles(activeShipTiles).length === 0) {
     activeMissShipIndex = null;
   }
+}
+
+function markFoundTargetTile(tileIndex) {
+  const hitShipIndex = dailyLocations.findIndex((ship) =>
+    ship.tiles.some((tile) => tile.index === tileIndex),
+  );
+
+  if (hitShipIndex === -1) {
+    return;
+  }
+
+  const targetShipTiles = targetFleetShipsByDailyShip[hitShipIndex];
+
+  if (!targetShipTiles) {
+    return;
+  }
+
+  const notFoundTiles = getNotFoundTargetTiles(targetShipTiles);
+
+  if (notFoundTiles.length === 0) {
+    return;
+  }
+
+  notFoundTiles[0].dataset.state = "found";
 }
 
 // Reset current tile selection so it unhighlights.
@@ -130,6 +171,8 @@ function fireAtSelectedTile() {
 
     if (shotResult === "miss") {
       removeMineShipLife();
+    } else {
+      markFoundTargetTile(tileIndex);
     }
   }, TILE_FLIP_STATE_SWAP_MS);
 
@@ -139,6 +182,8 @@ function fireAtSelectedTile() {
 
   clearSelectedTile();
 }
+
+setupTargetFleetShipMappings();
 
 // Fire at selected tile if tile is already selected
 function activateTile(tile) {

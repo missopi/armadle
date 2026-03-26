@@ -104,12 +104,27 @@ function updateGameOverMessage(outcome) {
   }
 
   if (outcome === "won") {
-    gameStatusMessage.textContent = "Congratulations. You found the full target fleet.";
+    gameStatusMessage.replaceChildren(
+      createStatusMessageLine("Congratulations!", "game-status-message-primary"),
+      createStatusMessageLine("You found today's target fleet.", "game-status-message-secondary"),
+    );
     return;
   }
 
-  gameStatusMessage.textContent =
-    "Game over. Your fleet is gone. The remaining target locations are highlighted.";
+  gameStatusMessage.replaceChildren(
+    createStatusMessageLine("Game over. Your fleet is gone.", "game-status-message-secondary"),
+    createStatusMessageLine(
+      "The remaining targets are highlighted. Try again tomorrow.",
+      "game-status-message-secondary",
+    ),
+  );
+}
+
+function createStatusMessageLine(text, className) {
+  const messageLine = document.createElement("span");
+  messageLine.className = className;
+  messageLine.textContent = text;
+  return messageLine;
 }
 
 function onGameOver() {

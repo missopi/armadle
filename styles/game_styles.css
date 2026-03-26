@@ -223,14 +223,28 @@ header {
 }
 
 .game-status-message {
-  min-height: 24px;
+  min-height: 48px;
   width: var(--board-width);
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 0 4px;
   box-sizing: border-box;
   text-align: center;
-  font-size: 0.95rem;
   font-weight: 600;
+  line-height: 1.2;
+}
+
+.game-status-message-primary,
+.game-status-message-secondary {
+  display: block;
+}
+
+.game-status-message-primary {
+  font-size: 2rem;
+}
+
+.game-status-message-secondary {
+  margin-top: 2px;
+  font-size: 1.1rem;
 }
 
 .game-board {
@@ -397,7 +411,7 @@ header {
   flex: 1 1 0;
   justify-content: center;
   min-width: 0;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .fleet {

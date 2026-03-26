@@ -22,9 +22,11 @@ const targetFleetShipsByDailyShip = [];
 const firedTileIndexes = new Set(); // Array to store shots fired tile indexes.
 const TILE_FLIP_DURATION_MS = 200;
 const TILE_FLIP_STATE_SWAP_MS = TILE_FLIP_DURATION_MS / 2;
+const gameStatusMessage = document.getElementById("game-status-message");
 
 let selectedTile = null;
 let activeMissShipIndex = null;
+let hasHandledGameOver = false;
 
 // Filter for my ships that are alive
 function getAliveMineTiles(shipTiles) {
@@ -34,6 +36,99 @@ function getAliveMineTiles(shipTiles) {
 // filter for target ships that are not found
 function getNotFoundTargetTiles(shipTiles) {
   return shipTiles.filter((tile) => tile.dataset.state === "not-found");
+}
+
+function isGameOver() {
+  return getGameOutcome() !== null;
+}
+
+function disableGameBoard() {
+  if (!gameBoard) {
+    return;
+  }
+
+  gameBoard.classList.add("is-disabled");
+  gameBoard.setAttribute("aria-disabled", "true");
+
+  tiles.forEach((tile) => {
+    tile.setAttribute("aria-disabled", "true");
+    tile.setAttribute("tabindex", "-1");
+  });
+
+  clearSelectedTile();
+}
+
+function getGameOutcome() {
+  const areAllTargetShipsFound = targetFleetShips.every(
+    (shipTiles) => getNotFoundTargetTiles(shipTiles).length === 0,
+  );
+  const areAllMineShipsLost = mineFleetShips.every(
+    (shipTiles) => getAliveMineTiles(shipTiles).length === 0,
+  );
+
+  if (areAllTargetShipsFound) {
+    return "won";
+  }
+
+  if (areAllMineShipsLost) {
+    return "lost";
+  }
+
+  return null;
+}
+
+function revealRemainingTargetLocations() {
+  dailyLocations.forEach((ship) => {
+    ship.tiles.forEach((targetTile) => {
+      if (firedTileIndexes.has(targetTile.index)) {
+        return;
+      }
+
+      const boardTile = tiles[targetTile.index];
+
+      if (!boardTile) {
+        return;
+      }
+
+      boardTile.dataset.state = "revealed";
+      boardTile.setAttribute("aria-label", `Tile ${targetTile.index + 1}, target location`);
+    });
+  });
+}
+
+function updateGameOverMessage(outcome) {
+  if (!gameStatusMessage) {
+    return;
+  }
+
+  if (outcome === "won") {
+    gameStatusMessage.textContent = "Congratulations. You found the full target fleet.";
+    return;
+  }
+
+  gameStatusMessage.textContent =
+    "Game over. Your fleet is gone. The remaining target locations are highlighted.";
+}
+
+function onGameOver() {
+  if (hasHandledGameOver) {
+    return;
+  }
+
+  const outcome = getGameOutcome();
+
+  if (!outcome) {
+    return;
+  }
+
+  hasHandledGameOver = true;
+
+  if (outcome === "lost") {
+    revealRemainingTargetLocations();
+  }
+
+  disableGameBoard();
+  updateGameOverMessage(outcome);
 }
 
 function setupTargetFleetShipMappings() {
@@ -152,6 +247,11 @@ function fireAtSelectedTile() {
     return;
   }
 
+  if (isGameOver()) {
+    onGameOver();
+    return;
+  }
+
   const tile = selectedTile;
   const tileIndex = Number(tile.dataset.index);
 
@@ -174,6 +274,10 @@ function fireAtSelectedTile() {
     } else {
       markFoundTargetTile(tileIndex);
     }
+
+    if (isGameOver()) {
+      onGameOver();
+    }
   }, TILE_FLIP_STATE_SWAP_MS);
 
   window.setTimeout(() => {
@@ -187,6 +291,11 @@ setupTargetFleetShipMappings();
 
 // Fire at selected tile if tile is already selected
 function activateTile(tile) {
+  if (isGameOver()) {
+    onGameOver();
+    return;
+  }
+
   if (isTileLocked(tile)) {
     clearSelectedTile();
     return;
@@ -222,6 +331,10 @@ tiles.forEach((tile, index) => {
     activateTile(tile);
   });
 });
+
+if (isGameOver()) {
+  onGameOver();
+}
 
 // Clicking away deselects tile
 document.addEventListener("click", (event) => {

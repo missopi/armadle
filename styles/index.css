@@ -39,6 +39,8 @@
   --miss-tile-bg-color: #f7f5f5;
   --hit-tile-color: #9f2232;
   --hit-tile-bg-color: #ee6b78;
+  --revealed-tile-color: #7a828d;
+  --revealed-tile-bg-color: #bbc0c5;
 
   /* Ship styles */
   --ship-nf-color: #8b939e;
@@ -73,25 +75,26 @@
   --sm-btn-text-color: #f7f3f4;
 
   /* Game tile styles */
-  --empty-tile-color: #4a6688;
-  --empty-tile-bg-color: #233246;
+  --empty-tile-color: #35567e;
+  --empty-tile-bg-color: #253d5d;
   --selected-tile-bg-color: #314862;
-  --miss-tile-color: #bbc2ca;
-  --miss-tile-bg-color: #77879c;
+  --miss-tile-color: #273e5c;
+  --miss-tile-bg-color: #142338;
   --hit-tile-color: #cc6873;
-  --hit-tile-bg-color: #960617;
+  --hit-tile-bg-color: #9e3945;
+  --revealed-tile-color: #bbc2ca;
+  --revealed-tile-bg-color: #77879c;
 
   /* Ship styles */
-  --ship-nf-color: #5c6d83;
-  --ship-nf-bg-color: #2a3442;
-  --ship-f-color: #d46b78;
-  --ship-f-bg-color: #6e3140;
+  --ship-nf-color: #505d6f;
+  --ship-nf-bg-color: #252c36;
+  --ship-f-color: #cc6873;
+  --ship-f-bg-color: #9e3945;
   --ship-container-border: #5c6d83;
 
   /* Life styles */
   --alive-color: #63a88b;
-  --alive-bg-color: #006243;
-  --life-lost-color: #5c6d83;
-  --life-lost-bg-color: #2a3442;
+  --alive-bg-color: #067b56;
+  --life-lost-color: #505d6f;
+  --life-lost-bg-color: #252c36;
 }
-

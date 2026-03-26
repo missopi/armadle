@@ -222,6 +222,17 @@ header {
   overflow: hidden;
 }
 
+.game-status-message {
+  min-height: 24px;
+  width: var(--board-width);
+  margin: 0 auto;
+  padding: 0 4px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .game-board {
   display: grid;
   grid-template-rows: repeat(7, 1fr);
@@ -229,6 +240,10 @@ header {
   padding: 2px;
   box-sizing: border-box;
   width: var(--board-width);
+}
+
+.game-board.is-disabled {
+  pointer-events: none;
 }
 
 .game-row {
@@ -274,6 +289,11 @@ header {
   background-color: var(--hit-tile-bg-color);
 }
 
+.game-tile[data-state="revealed"] {
+  border: 2px solid var(--revealed-tile-color);
+  background-color: var(--revealed-tile-bg-color);
+}
+
 .game-tile:not([aria-disabled="true"]):active,
 .game-tile.is-selected {
   transform: scale(0.93);
@@ -291,6 +311,10 @@ header {
 .game-tile[aria-disabled="true"] {
   cursor: default;
   pointer-events: none;
+}
+
+.game-board.is-disabled .game-tile {
+  cursor: default;
 }
 
 .game-tile:focus-visible {

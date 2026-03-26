@@ -116,7 +116,7 @@ header {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
   color: var(--settings-text-color);
   z-index: 200;
-  padding: 6px 5px 20px;
+  padding: 12px 10px 22px;
   max-height: min(80dvh, 720px);
   overflow-y: auto;
 }
@@ -203,18 +203,51 @@ header {
 .how-to-dropdown h2,
 .settings-dropdown h2 {
   text-align: center;
-  margin: 10px 12px 8px;
+  margin: 0 40px 12px;
+  line-height: 1.15;
 }
 
 .modal-copy {
   display: grid;
-  gap: 10px;
-  padding: 0 14px;
-  line-height: 1.45;
+  gap: 16px;
+  padding: 0 16px 2px;
+  line-height: 1.55;
 }
 
 .modal-copy p {
   margin: 0;
+}
+
+.modal-intro {
+  max-width: 34ch;
+  font-size: 1rem;
+}
+
+.instruction-section {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--settings-border-color) 82%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--settings-hover-color) 50%, transparent);
+}
+
+.instruction-heading {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.instruction-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.instruction-list li {
+  padding-left: 2px;
 }
 
 .instruction-legend {
@@ -239,6 +272,8 @@ header {
   box-sizing: border-box;
   border-radius: 15%;
   flex: 0 0 auto;
+  vertical-align: text-bottom;
+  margin: 0 4px;
 }
 
 .instruction-tile[data-state="miss"] {

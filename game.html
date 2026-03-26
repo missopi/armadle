@@ -34,11 +34,19 @@
                 </button>
                 <h2 id="how-to-title">How To Play</h2>
                 <div class="modal-copy">
-                  <p>Find the hidden fleet on the 7x7 board.</p>
-                  <p>Each shot is either a hit <span class="instruction-tile" data-state="hit" aria-hidden="true"></span> or a miss  <span class="instruction-tile" data-state="miss" aria-hidden="true"></span>.</p>
-                  <p>Your fleet <span class="instruction-ship-tile" data-state="alive" aria-hidden="true"></span> and the target fleet <span class="instruction-ship-tile" data-state="not-found" aria-hidden="true"></span> both have four straight ships with lengths 2, 2, 3, and 4.</p>
-                  <p>Misses cost one segment from your own fleet.</p>
-                  <p>Turn on single shot fire in settings if you want one tap or click to fire immediately.</p>
+                  <p class="modal-intro">Find the hidden fleet on the 7x7 board.</p>
+                  <section class="instruction-section" aria-labelledby="how-to-rules-title">
+                    <h3 class="instruction-heading" id="how-to-rules-title">Rules</h3>
+                    <ul class="instruction-list">
+                      <li>Each shot is either a hit <span class="instruction-tile" data-state="hit" aria-hidden="true"></span> or a miss <span class="instruction-tile" data-state="miss" aria-hidden="true"></span>.</li>
+                      <li>Your fleet <span class="instruction-ship-tile" data-state="alive" aria-hidden="true"></span> and the target fleet <span class="instruction-ship-tile" data-state="not-found" aria-hidden="true"></span> both have four straight ships with lengths 2, 2, 3, and 4. They can be horizontal or vertical.</li>
+                      <li>Every miss costs one segment from your own fleet.</li>
+                    </ul>
+                  </section>
+                  <section class="instruction-section" aria-labelledby="how-to-tip-title">
+                    <h3 class="instruction-heading" id="how-to-tip-title">Tip</h3>
+                    <p>Turn on single shot fire in settings if you want one tap or click to fire immediately.</p>
+                  </section>
                 </div>
               </div>
             </div>

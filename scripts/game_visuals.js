@@ -167,6 +167,7 @@ async function copyShareResults(shareResultsText) {
   }
 }
 
+// Share using system share window on mobiles
 async function shareResults() {
   const shareResultsText = getShareResultsText();
 

@@ -153,9 +153,7 @@ function setShareResultsFeedback(message) {
   shareResultsFeedback.textContent = message;
 }
 
-async function copyShareResults() {
-  const shareResultsText = getShareResultsText();
-
+async function copyShareResults(shareResultsText) {
   if (!navigator.clipboard?.writeText) {
     setShareResultsFeedback("Clipboard not available.");
     return;
@@ -164,9 +162,31 @@ async function copyShareResults() {
   try {
     await navigator.clipboard.writeText(shareResultsText);
     setShareResultsFeedback("Copied to clipboard.");
-  } catch (error) {
+  } catch {
     setShareResultsFeedback("Copy failed.");
   }
+}
+
+async function shareResults() {
+  const shareResultsText = getShareResultsText();
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Armadle",
+        text: shareResultsText,
+      });
+      setShareResultsFeedback("Shared.");
+      return;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        setShareResultsFeedback("");
+        return;
+      }
+    }
+  }
+
+  await copyShareResults(shareResultsText);
 }
 
 function createStatusMessageLine(text, className) {
@@ -419,7 +439,7 @@ if (isGameOver()) {
 
 if (shareResultsButton) {
   shareResultsButton.addEventListener("click", () => {
-    copyShareResults();
+    shareResults();
   });
 }
 
